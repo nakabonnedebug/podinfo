@@ -16,4 +16,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: nakabonne/podinfo
           dockerfile: ./Dockerfile
-          tag_with_sha: true
+          tag_with_ref: true
