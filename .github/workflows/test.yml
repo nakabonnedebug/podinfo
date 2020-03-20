@@ -1,0 +1,33 @@
+name: test
+on:
+  push:
+    branches:
+    - master
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: kubeval
+        uses: stefanprodan/kube-tools@v1
+        with:
+          command: |
+            kustomize build ./kustomize | kubeval --strict
+      - name: conftest
+        uses: stefanprodan/kube-tools@v1
+        with:
+          command: |
+            kustomize build ./kustomize | conftest test -p .github/policy -
+  push-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1.0.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: nakabonne/podinfo
+          dockerfile: ./Dockerfile
+          tag_with_sha: true
