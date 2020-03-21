@@ -14,10 +14,10 @@ import (
 // @Router / [get]
 // @Success 200 {string} string "OK"
 func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("index.html").ParseFiles(path.Join(s.config.UIPath, "index.html"))
+	tmpl, err := template.New("index.html").ParseFiles(path.Join(s.config.UIPath, "vue.html"))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(path.Join(s.config.UIPath, "index.html") + err.Error()))
+		w.Write([]byte(path.Join(s.config.UIPath, "vue.html") + err.Error()))
 		return
 	}
 
@@ -30,6 +30,6 @@ func (s *Server) indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := tmpl.Execute(w, data); err != nil {
-		http.Error(w, path.Join(s.config.UIPath, "index.html")+err.Error(), http.StatusInternalServerError)
+		http.Error(w, path.Join(s.config.UIPath, "vue.html")+err.Error(), http.StatusInternalServerError)
 	}
 }
